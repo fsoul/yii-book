@@ -38,6 +38,13 @@ return array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
+        'db'=>array(
+            'class'=>'CDbConnection',
+            'connectionString'=>'mysql:host=localhost;dbname=yii-book',
+            'username'=>'root',
+            'password'=>'',
+            'emulatePrepare'=>true,
+        ),
 
 		// uncomment the following to enable URLs in path-format
 

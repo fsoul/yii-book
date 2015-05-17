@@ -54,14 +54,7 @@ class BooksController extends Controller
     {
         $criteria = new CDbCriteria;
         $criteria->condition = 't.id=' . $id;
-        $criteria->with = array(
-            'booksAuthors' => array(
-                'with' => 'author'
-            ),
-            'booksCategories' => array(
-                'with' => 'category'
-            )
-        );
+        $criteria->with = array('booksAuthors', 'booksAuthors.author', 'booksCategories', 'booksCategories.category');
         $model = Books::model()->find($criteria);
         $this->render('view', array(
             'model' => $model,
@@ -109,12 +102,14 @@ class BooksController extends Controller
         $model = $this->loadModel($id);
         $model->cat_title = Category::all();
         $model->authors = Authors::all();
-        $model->checked = BooksAuthors::model()->findAll(array(
+        $checked = BooksAuthors::model()->findAll(array(
             'select' => 'author_id',
             'condition' => 'book_id=:book_id',
             'params' => array(':book_id' => $id),
         ));
-
+        foreach($checked as $v){
+            $model->checked[] = $v->author_id;
+        }
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 

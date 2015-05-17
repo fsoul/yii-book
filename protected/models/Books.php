@@ -39,7 +39,7 @@ class Books extends CActiveRecord
             array('poster_path', 'file', 'types' => 'jpg, gif, png'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, title, poster_path', 'safe', 'on' => 'search'),
+            array('id, title, poster_path, checked', 'safe', 'on' => 'search'),
         );
     }
 
@@ -106,30 +106,46 @@ class Books extends CActiveRecord
         return parent::model($className);
     }
 
+    public function arr2str($arr, $id)
+    {
+        foreach ($arr as $item) {
+            $value[] = '(' . $id . ',' . $item . ')';
+        }
+        $res = implode(',', $value);
+
+        return $res;
+    }
+
     protected function afterSave()
     {
         parent::afterSave();
 
-        if ($this->isNewRecord) {
-            foreach ($this->cat_title as $category_id) {
-                $book_cat = new BooksCategory();
-                $book_cat->book_id = $this->id;
-                $book_cat->category_id = $category_id;
-                $book_cat->save();
-            }
+        if (!$this->isNewRecord) {
+            BooksCategory::model()->deleteAll(array(
+                'condition' => 'book_id=:book_id',
+                'params' => array(':book_id' => $this->id),
+            ));
+            BooksAuthors::model()->deleteAll(array(
+                'condition' => 'book_id=:book_id',
+                'params' => array(':book_id' => $this->id),
+            ));
+        }
 
-            foreach ($this->authors as $author_id) {
-                $book_auth = new BooksAuthors();
-                $book_auth->book_id = $this->id;
-                $book_auth->author_id = $author_id;
-                $book_auth->save();
-            }
-        } else {
+        $cat_values = $this->arr2str($this->cat_title, $this->id);
+        $auth_values = $this->arr2str($this->authors, $this->id);
 
-           // VHelper::dump($checked, 1);
+        $connection = Yii::app()->db;
 
-            BooksCategory::model()->updateAll(array('book_id' => $this->cat_title,
-            ), 'title=:title', array(':title' => $this->cat_title));
+        $sql1 = "INSERT INTO books_category(book_id, category_id) VALUES" . $cat_values;
+        $sql2 = "INSERT INTO books_authors(book_id, author_id) VALUES" . $auth_values;
+
+        $transaction = $connection->beginTransaction();
+        try {
+            $connection->createCommand($sql1)->execute();
+            $connection->createCommand($sql2)->execute();
+            $transaction->commit();
+        } catch (Exception $e) {
+            $transaction->rollback();
         }
     }
 }
