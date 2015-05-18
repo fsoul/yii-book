@@ -1,0 +1,32 @@
+#page {
+    padding-top: 100px;
+}
+.view{
+    margin: 20px;
+}
+.main-books{
+    margin-right: 35px;
+}
+.main-books img{
+    height: 165px;
+    width: 110px;
+}
+.books-authors{
+    margin: 5px 0;
+}
+.book-view-img{
+    height: 300px;
+    width: 200px;
+}
+.btn{
+    padding: 10px 30px !important;
+}
+.h{
+    margin-bottom: 15px;
+}
+.h span input, .h span label{
+    display: inline-block;
+}
+#footer{
+    margin-top: 40px;
+}

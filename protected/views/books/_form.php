@@ -27,25 +27,24 @@
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'Poster'); ?>
+        <?php echo $form->labelEx($model, 'Poster:'); ?>
         <?php echo $form->fileField($model, 'poster_path', array('size' => 60, 'maxlength' => 255)); ?>
         <?php echo $form->error($model, 'poster_path'); ?>
     </div>
-    <? if(!empty($model->poster_path)): ?>
-    <img height="100" src="/upload/images/<?= $model->poster_path; ?>" alt=""/>
-    <? endif; ?>
-    <div class="row">
-        <?php echo $form->labelEx($model, 'Category'); ?>
-        <?php echo $form->checkBoxList($model, 'cat_title', $model->cat_title); ?>
-    </div>
 
-    <div class="row">
-        <?php echo $form->labelEx($model, 'Author'); ?>
+    <br>
+    <div class="row h">
+        <?php echo $form->labelEx($model, 'Authors:'); ?>
         <?php echo $form->checkBoxList($model, 'authors', $model->authors); ?>
     </div>
 
+    <div class="row h">
+        <?php echo $form->labelEx($model, 'Categories:'); ?>
+        <?php echo $form->checkBoxList($model, 'cat_title', $model->cat_title); ?>
+    </div>
+    <br>
     <div class="row buttons">
-        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn btn-primary')); ?>
     </div>
 
     <?php $this->endWidget(); ?>

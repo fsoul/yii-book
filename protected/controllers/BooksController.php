@@ -71,16 +71,16 @@ class BooksController extends Controller
         $model->cat_title = Category::all();
         $model->authors = Authors::all();
 
-
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['Books'])) {
-            $model->attributes = $_POST['Books'];
+            $model->title = $_POST['Books']['title'];
             $model->cat_title = $_POST['Books']['cat_title'];
             $model->authors = $_POST['Books']['authors'];
             $uploaded_file = CUploadedFile::getInstance($model, 'poster_path');
-            $model->poster_path = uniqid() . '.' . $uploaded_file->getExtensionName();
+            if ($uploaded_file)
+                $model->poster_path = uniqid() . '.' . $uploaded_file->getExtensionName();
             if ($model->save()) {
                 $uploaded_file->saveAs(self::UPLOAD_PATH . $model->poster_path);
                 $this->redirect(array('view', 'id' => $model->id));
@@ -102,21 +102,28 @@ class BooksController extends Controller
         $model = $this->loadModel($id);
         $model->cat_title = Category::all();
         $model->authors = Authors::all();
-        $checked = BooksAuthors::model()->findAll(array(
+        /*$checked = BooksAuthors::model()->findAll(array(
             'select' => 'author_id',
             'condition' => 'book_id=:book_id',
             'params' => array(':book_id' => $id),
         ));
-        foreach($checked as $v){
+        foreach ($checked as $v) {
             $model->checked[] = $v->author_id;
-        }
+        }*/
+
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['Books'])) {
-            $model->attributes = $_POST['Books'];
+            $model->title = $_POST['Books']['title'];
+            $model->cat_title = $_POST['Books']['cat_title'];
+            $model->authors = $_POST['Books']['authors'];
+            $uploaded_file = CUploadedFile::getInstance($model, 'poster_path');
+            if ($uploaded_file)
+                $model->poster_path = uniqid() . '.' . $uploaded_file->getExtensionName();
             if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+                $uploaded_file->saveAs(self::UPLOAD_PATH . $model->poster_path);
+            $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('update', array(

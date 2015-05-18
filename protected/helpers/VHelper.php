@@ -12,7 +12,7 @@ class VHelper
 
     public static function getRandomFileName($path, $extension = '')
     {
-        $extension = $extension ? '.' . $extension : '.'.self::TYPE_JPG;
+        $extension = $extension ? '.' . $extension : '.' . self::TYPE_JPG;
         $path = $path ? $path . '/' : '';
 
         do {
