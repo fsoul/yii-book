@@ -12,7 +12,6 @@ $this->menu = array(
     array('label' => 'List Books', 'url' => array('index')),
     array('label' => 'Create Books', 'url' => array('create')),
     array('label' => 'View Books', 'url' => array('view', 'id' => $model->id)),
-    array('label' => 'Manage Books', 'url' => array('admin')),
 );
 ?>
 

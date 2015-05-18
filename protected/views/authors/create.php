@@ -9,7 +9,6 @@ $this->breadcrumbs = array(
 
 $this->menu = array(
     array('label' => 'List Authors', 'url' => array('index')),
-    array('label' => 'Manage Authors', 'url' => array('admin')),
 );
 ?>
 

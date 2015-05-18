@@ -12,7 +12,6 @@ $this->menu = array(
     array('label' => 'List Authors', 'url' => array('index')),
     array('label' => 'Create Authors', 'url' => array('create')),
     array('label' => 'View Authors', 'url' => array('view', 'id' => $model->id)),
-    array('label' => 'Manage Authors', 'url' => array('admin')),
 );
 ?>
 

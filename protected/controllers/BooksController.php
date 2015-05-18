@@ -3,6 +3,7 @@
 class BooksController extends Controller
 {
     const UPLOAD_PATH = 'upload/images/';
+    const EXT_DELIMETER = '.';
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -80,7 +81,7 @@ class BooksController extends Controller
             $model->authors = $_POST['Books']['authors'];
             $uploaded_file = CUploadedFile::getInstance($model, 'poster_path');
             if ($uploaded_file)
-                $model->poster_path = uniqid() . '.' . $uploaded_file->getExtensionName();
+                $model->poster_path = uniqid() . self::EXT_DELIMETER . $uploaded_file->getExtensionName();
             if ($model->save()) {
                 $uploaded_file->saveAs(self::UPLOAD_PATH . $model->poster_path);
                 $this->redirect(array('view', 'id' => $model->id));
@@ -102,14 +103,6 @@ class BooksController extends Controller
         $model = $this->loadModel($id);
         $model->cat_title = Category::all();
         $model->authors = Authors::all();
-        /*$checked = BooksAuthors::model()->findAll(array(
-            'select' => 'author_id',
-            'condition' => 'book_id=:book_id',
-            'params' => array(':book_id' => $id),
-        ));
-        foreach ($checked as $v) {
-            $model->checked[] = $v->author_id;
-        }*/
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -120,7 +113,7 @@ class BooksController extends Controller
             $model->authors = $_POST['Books']['authors'];
             $uploaded_file = CUploadedFile::getInstance($model, 'poster_path');
             if ($uploaded_file)
-                $model->poster_path = uniqid() . '.' . $uploaded_file->getExtensionName();
+                $model->poster_path = uniqid() . self::EXT_DELIMETER . $uploaded_file->getExtensionName();
             if ($model->save())
                 $uploaded_file->saveAs(self::UPLOAD_PATH . $model->poster_path);
             $this->redirect(array('view', 'id' => $model->id));

@@ -8,7 +8,6 @@ $this->breadcrumbs = array(
 
 $this->menu = array(
     array('label' => 'Create Authors', 'url' => array('create')),
-    array('label' => 'Manage Authors', 'url' => array('admin')),
 );
 ?>
 
